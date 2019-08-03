@@ -1,0 +1,52 @@
+buildscript {
+    ext.appengine_version = '1.9.60'
+    ext.appengine_plugin_version = '1.3.4'
+    repositories {
+        jcenter()
+    }
+    
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.cloud.tools:appengine-gradle-plugin:$appengine_plugin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+apply plugin: 'war'
+apply plugin: 'com.google.cloud.tools.appengine'
+
+group 'com.example'
+version '0.0.1'
+mainClassName = "io.ktor.server.netty.EngineMain"
+
+sourceSets {
+    main.kotlin.srcDirs = main.java.srcDirs = ['src']
+    test.kotlin.srcDirs = test.java.srcDirs = ['test']
+    main.resources.srcDirs = ['resources']
+    test.resources.srcDirs = ['testresources']
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // ktor
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    implementation "io.ktor:ktor-jackson:$ktor_version"
+
+    // koin
+    implementation "org.koin:koin-ktor:$koin_ktor_version"
+
+    // log
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+
+    // test
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+}
