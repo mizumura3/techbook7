@@ -1,0 +1,13 @@
+# mysql
+mysql:
+  image: mysql:5.7
+  command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  volumes:
+    - ./mysql/mysql_data:/var/lib/mysql
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_DATABASE: example
+    MYSQL_ROOT_PASSWORD: password
+  ports:
+    - "3306:3306"
