@@ -24,6 +24,36 @@ internal class ArtistRepositoryImplTest : TestBase() {
         }.launch()
     }
 
+    /**
+     * 全件取得できること
+     */
+    @Test
+    fun findAll() {
+        transaction {
+            repository.create(
+                Artist(
+                    name = "Skrillex",
+                    birth = LocalDate.parse("2019-01-18"),
+                    website = "https://skrillex.com/"
+                )
+            )
+
+            repository.create(
+                Artist(
+                    name = "ZEDD",
+                    birth = LocalDate.parse("2019-01-18"),
+                    website = "https://www.zedd.net/"
+                )
+            )
+
+            val result = repository.findAll()
+            assertThat(result).isNotEmpty()
+        }
+    }
+
+    /**
+     * ID と一致する artist が取得できること
+     */
     @Test
     fun findById() {
         transaction {
@@ -32,6 +62,9 @@ internal class ArtistRepositoryImplTest : TestBase() {
         }
     }
 
+    /**
+     * artist が insert されること
+     */
     @Test
     fun create() {
         transaction {
