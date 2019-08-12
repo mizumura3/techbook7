@@ -26,10 +26,7 @@ version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
 
 sourceSets {
-    main.kotlin.srcDirs = main.java.srcDirs = ['src']
-    test.kotlin.srcDirs = test.java.srcDirs = ['test']
-    main.resources.srcDirs = ['resources']
-    test.resources.srcDirs = ['testresources']
+    main.kotlin.srcDirs += 'src/main/kotlin'
 }
 
 repositories {
@@ -48,16 +45,25 @@ dependencies {
 
     // koin
     implementation "org.koin:koin-ktor:$koin_ktor_version"
+    implementation "org.koin:koin-test:$koin_ktor_version"
 
     // exposed
     implementation "org.jetbrains.exposed:exposed:$exposed_version"
 
     // mysql
-    runtime 'mysql:mysql-connector-java:8.0.11'
+    implementation "mysql:mysql-connector-java:8.0.11"
 
     // log
     implementation "ch.qos.logback:logback-classic:$logback_version"
 
     // test
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+
+    // junit5
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_version"
+    testImplementation "org.assertj:assertj-core:3.10.0"
+
+    // dbsetup
+    testImplementation 'com.ninja-squad:DbSetup-kotlin:2.1.0'
 }

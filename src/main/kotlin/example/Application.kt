@@ -1,8 +1,7 @@
 package com.example
 
-import com.example.dao.ArtistDao
-import com.example.model.Artist
-import com.example.service.ArtistService
+import example.domain.Artist
+import example.module
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -15,10 +14,8 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.koin.dsl.module
+import org.joda.time.LocalDate
 import org.koin.ktor.ext.Koin
-import org.koin.ktor.ext.inject
 
 fun main(args: Array<String>) {
 
@@ -29,11 +26,6 @@ fun main(args: Array<String>) {
         user = "root",
         password = "password"
     )
-    val hoge = transaction {
-        ArtistDao.new {
-            name = "Skrillex"
-        }
-    }
 
     io.ktor.server.netty.EngineMain.main(args)
 }
@@ -49,17 +41,13 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
-    val hogeModule = module {
-        single { ArtistService() }
-    }
-
     install(Koin) {
-        modules(hogeModule)
+        modules(module)
     }
 
     routing {
         get("/") {
-            call.respond(HttpStatusCode.OK, Artist("hoge"))
+            call.respond(HttpStatusCode.OK, "")
         }
     }
 }
