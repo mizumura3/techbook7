@@ -19,14 +19,16 @@ abstract class TestBase : KoinTest {
             // koin.properties の読み込み
             fileProperties()
 
-            // koin の環境変数読み込み
+            // koin.properties の設定値を System.getEnv で設定された値で上書きする
             environmentProperties()
 
+            // koin.properties を読み込んでから getProperty() を呼び出さないとエラーになる
+            // koin.getProperty(key, defaultValue) は non-nullable
             Database.connect(
-                url = koin.getProperty("db.url")!!,
-                driver = koin.getProperty("db.driver")!!,
-                user = koin.getProperty("db.user")!!,
-                password = koin.getProperty("db.password")!!
+                url = koin.getProperty("db.url", ""),
+                driver = koin.getProperty("db.driver", ""),
+                user = koin.getProperty("db.user", ""),
+                password = koin.getProperty("db.password", "")
             )
             modules(listOf(sampleModule, testModule))
         }
@@ -44,11 +46,11 @@ abstract class TestBase : KoinTest {
 val testModule = module {
     // dbSetUp で使うデータソース
     single {
-        val dataSource = MysqlDataSource()
-        dataSource.setURL(getProperty("db.url"))
-        dataSource.user = getProperty("db.user")
-        dataSource.setPassword(getProperty("db.password"))
-        dataSource as DataSource
+        MysqlDataSource().apply {
+            setURL(getProperty("db.url"))
+            user = getProperty("db.user")
+            setPassword(getProperty("db.password"))
+        } as DataSource
     }
 }
 
