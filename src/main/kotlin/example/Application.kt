@@ -1,7 +1,7 @@
 package com.example
 
-import example.domain.Artist
-import example.module
+import example.sampleModule
+import example.route.root
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -14,7 +14,6 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.Database
-import org.joda.time.LocalDate
 import org.koin.ktor.ext.Koin
 
 fun main(args: Array<String>) {
@@ -32,7 +31,7 @@ fun main(args: Array<String>) {
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
+fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
     install(ContentNegotiation) {
@@ -42,12 +41,21 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(Koin) {
-        modules(module)
+        // ktor から設定読み込んで koin の property に設定する方法 今は使わない
+        // koin.setProperty("db.user", environment.config.property("db.user").getString())
+
+        // こうやって書くと koin.properties を読んでから System.getEnv で環境変数を読んで格納するので
+        // 同じキー名の環境変数があった場合は上書きする
+        fileProperties()
+        environmentProperties()
+
+        modules(sampleModule)
     }
 
     routing {
         get("/") {
             call.respond(HttpStatusCode.OK, "")
         }
+        root()
     }
 }
