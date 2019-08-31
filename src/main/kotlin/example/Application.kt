@@ -30,7 +30,6 @@ fun main(args: Array<String>) {
 }
 
 @Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)

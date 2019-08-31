@@ -26,6 +26,7 @@ class ArtistRepositoryImpl : ArtistRepository {
     override fun findById(id: Int): Artist {
         return Artists.select { Artists.id eq id }.map {
                 Artist(
+                    id = it[Artists.id].value,
                     name = it[Artists.name],
                     birth = it[Artists.birth].toLocalDate(),
                     website = it[Artists.website]

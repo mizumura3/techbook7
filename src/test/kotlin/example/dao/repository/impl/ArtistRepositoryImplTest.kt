@@ -1,12 +1,12 @@
 package example.dao.repository.impl
 
-import example.domain.Artist
 import example.repository.ArtistRepository
 import com.ninja_squad.dbsetup_kotlin.dbSetup
 import example.common.TestBase
+import example.common.artist_skrillex
+import example.common.artist_zedd
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.koin.test.inject
@@ -30,24 +30,15 @@ internal class ArtistRepositoryImplTest : TestBase() {
     @Test
     fun findAll() {
         transaction {
-            repository.create(
-                Artist(
-                    name = "Skrillex",
-                    birth = LocalDate.parse("2019-01-18"),
-                    website = "https://skrillex.com/"
-                )
-            )
+            // setup
+            repository.create(artist_skrillex())
+            repository.create(artist_zedd())
 
-            repository.create(
-                Artist(
-                    name = "ZEDD",
-                    birth = LocalDate.parse("2019-01-18"),
-                    website = "https://www.zedd.net/"
-                )
-            )
-
+            // exercise
             val result = repository.findAll()
-            assertThat(result).isNotEmpty()
+
+            // verify
+            assertThat(result).hasSize(2)
         }
     }
 
@@ -57,8 +48,14 @@ internal class ArtistRepositoryImplTest : TestBase() {
     @Test
     fun findById() {
         transaction {
-            val result = repository.findById(1)
-            assertThat(result.name).isEqualTo("Skrillex")
+            // setup
+            val id = repository.create(artist_skrillex())
+
+            // exercise
+            val result = repository.findById(id)
+
+            // verifyA
+            assertThat(result).isEqualToIgnoringGivenFields(artist_skrillex(), "id")
         }
     }
 
@@ -68,12 +65,10 @@ internal class ArtistRepositoryImplTest : TestBase() {
     @Test
     fun create() {
         transaction {
-            val a = Artist(
-                name = "Skrillex",
-                birth = LocalDate.parse("2019-01-18"),
-                website = "skrillex.com"
-            )
-            val result = repository.create(a)
+            // exercise
+            val result = repository.create(artist_skrillex())
+
+            // verify
             assertThat(result).isNotNull()
         }
     }

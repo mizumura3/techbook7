@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
 import org.koin.test.inject
 import javax.sql.DataSource
 
-
 internal class ArtistServiceTest : TestBase() {
 
     private val service by inject<ArtistService>()
