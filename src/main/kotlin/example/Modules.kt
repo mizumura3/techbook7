@@ -1,9 +1,11 @@
 package example
 
-import example.repository.ArtistRepository
+import example.repository.ArtistsRepository
 import example.service.ArtistService
 import example.controller.ArtistController
-import example.repository.impl.ArtistRepositoryImpl
+import example.repository.MusicsRepository
+import example.repository.impl.ArtistsRepositoryImpl
+import example.repository.impl.MusicsRepositoryImpl
 import org.koin.dsl.module
 import org.koin.experimental.builder.single
 
@@ -11,7 +13,8 @@ import org.koin.experimental.builder.single
  * モジュール定義
  */
 val sampleModule = module {
-    single<ArtistRepository> { ArtistRepositoryImpl() }
+    single<ArtistsRepository> { ArtistsRepositoryImpl() }
+    single<MusicsRepository> { MusicsRepositoryImpl() }
     single<ArtistService>()
     single<ArtistController>()
 }

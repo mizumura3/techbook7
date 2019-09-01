@@ -2,7 +2,7 @@ package example.repository.impl
 
 import example.domain.Artist
 import example.exception.RecordNotFoundException
-import example.repository.ArtistRepository
+import example.repository.ArtistsRepository
 import example.table.Artists
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.selectAll
 /**
  * Artists を操作する repository の実装
  */
-class ArtistRepositoryImpl : ArtistRepository {
+class ArtistsRepositoryImpl : ArtistsRepository {
 
     override fun findAll(): List<Artist> {
         return Artists.selectAll().map {

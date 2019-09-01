@@ -5,7 +5,7 @@ import example.domain.Artist
 /**
  * Artist を操作する repository の interface
  */
-interface ArtistRepository {
+interface ArtistsRepository {
 
     /**
      * 全件取得

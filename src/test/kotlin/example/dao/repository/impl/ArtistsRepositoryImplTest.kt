@@ -1,6 +1,6 @@
 package example.dao.repository.impl
 
-import example.repository.ArtistRepository
+import example.repository.ArtistsRepository
 import com.ninja_squad.dbsetup_kotlin.dbSetup
 import example.common.TestBase
 import example.common.artist_skrillex
@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test
 import org.koin.test.inject
 import javax.sql.DataSource
 
-internal class ArtistRepositoryImplTest : TestBase() {
+internal class ArtistsRepositoryImplTest : TestBase() {
 
-    private val repository by inject<ArtistRepository>()
+    private val repository by inject<ArtistsRepository>()
     private val datasource by inject<DataSource>()
 
     @BeforeEach

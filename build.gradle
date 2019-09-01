@@ -12,6 +12,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.cloud.tools:appengine-gradle-plugin:$appengine_plugin_version"
         classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:3.2.0"
+        classpath "org.mariadb.jdbc:mariadb-java-client:2.1.2"
+        classpath "com.maeharin:factlin:0.3.0"
     }
 }
 
@@ -20,6 +22,7 @@ apply plugin: 'application'
 apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine'
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
+apply plugin: 'factlin'
 
 group 'com.example'
 version '0.0.1'
@@ -71,4 +74,14 @@ dependencies {
 
     // dbsetup
     testImplementation 'com.ninja-squad:DbSetup-kotlin:2.1.0'
+}
+
+factlin {
+    dbUrl = "jdbc:mysql://127.0.0.1:3306/example?nullNamePatternMatchesAll=true&createDatabaseIfNotExist=true&useSSL=false"
+    dbUser = "root"
+    dbPassword = "password"
+    dbDialect = "mariadb"
+    fixtureOutputDir = "src/test/kotlin/example/common/fixtures"
+    fixturePackageName = "example.fixtures"
+    schema = "example"
 }
