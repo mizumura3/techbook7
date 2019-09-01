@@ -9,15 +9,23 @@ class ArtistService(private val artistRepository: ArtistRepository) {
     /**
      * 全件取得する
      *
-     * @return アーティスト全件
+     * @return Artists 全件
      */
     fun all(): List<Artist> = transaction { artistRepository.findAll() }
 
     /**
-     * アーティストを登録する
+     * Artists を登録する
      *
      * @param artist
      * @return id
      */
     fun create(artist: Artist): Int = transaction { artistRepository.create(artist) }
+
+    /**
+     * Artists を取得する
+     *
+     * @param artistId
+     * @return Artist
+     */
+    fun get(artistId: Int): Artist = transaction { artistRepository.findById(artistId) }
 }

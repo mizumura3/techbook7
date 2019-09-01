@@ -1,19 +1,20 @@
 package com.example
 
+import com.fasterxml.jackson.datatype.joda.JodaModule
+import example.common.LocalDateSerializer
 import example.sampleModule
 import example.route.root
 import io.ktor.application.Application
-import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
-import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
-import io.ktor.response.respond
+import io.ktor.locations.Locations
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.Database
+import org.joda.time.LocalDate
 import org.koin.ktor.ext.Koin
 
 fun main(args: Array<String>) {
@@ -33,9 +34,18 @@ fun main(args: Array<String>) {
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
+    install(Locations)
     install(ContentNegotiation) {
         jackson {
             // 設定はこの中に記述する
+            registerModule(
+                JodaModule().apply {
+                    addSerializer(
+                        LocalDate::class.java,
+                        LocalDateSerializer()
+                    )
+                }
+            )
         }
     }
 
@@ -52,9 +62,6 @@ fun Application.module() {
     }
 
     routing {
-        get("/") {
-            call.respond(HttpStatusCode.OK, "")
-        }
         root()
     }
 }

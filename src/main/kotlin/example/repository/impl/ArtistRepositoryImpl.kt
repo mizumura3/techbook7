@@ -16,6 +16,7 @@ class ArtistRepositoryImpl : ArtistRepository {
     override fun findAll(): List<Artist> {
         return Artists.selectAll().map {
             Artist(
+                id = it[Artists.id].value,
                 name = it[Artists.name],
                 birth = it[Artists.birth].toLocalDate(),
                 website = it[Artists.website]
