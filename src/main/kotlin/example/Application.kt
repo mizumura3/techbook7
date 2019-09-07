@@ -1,17 +1,21 @@
 package com.example
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import example.common.LocalDateSerializer
 import example.sampleModule
 import example.route.root
 import io.ktor.application.Application
+import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
 import io.ktor.locations.Locations
-import io.ktor.routing.get
+import io.ktor.response.respond
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.Database
 import org.joda.time.LocalDate
@@ -49,6 +53,7 @@ fun Application.module() {
         }
     }
 
+    // Koin
     install(Koin) {
         // ktor から設定読み込んで koin の property に設定する方法 今は使わない
         // koin.setProperty("db.user", environment.config.property("db.user").getString())
@@ -59,6 +64,15 @@ fun Application.module() {
         environmentProperties()
 
         modules(sampleModule)
+    }
+
+    // StatusPages
+    install(StatusPages) {
+        // json の parse に失敗した場合は BadRequest を返却する
+        exception<JsonParseException> {
+            call.respond(HttpStatusCode.BadRequest, it.message!!)
+            throw it // スローすると stacktrace をログに出力する
+        }
     }
 
     routing {

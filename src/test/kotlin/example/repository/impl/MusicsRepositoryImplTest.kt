@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test
 import org.koin.test.inject
 import javax.sql.DataSource
 
-
 internal class MusicsRepositoryImplTest : TestBase() {
 
     private val datasource by inject<DataSource>()
@@ -66,5 +65,23 @@ internal class MusicsRepositoryImplTest : TestBase() {
 
         // verify
         assertThat(result).hasSize(2)
+    }
+
+    @DisplayName("名称が Purple Lamborghini に更新されること")
+    @Test
+    fun update() {
+
+        // setup
+        dbSetup(to = datasource) {
+            insertArtistsFixture(ArtistsFixture().skrillex())
+            insertMusicsFixture(MusicsFixture().skrillex())
+        }.launch()
+
+        // exercise
+        transaction { repository.update(1, "Purple Lamborghini") }
+
+        // verify
+        val result = transaction { repository.findById(1) }
+        assertThat(result.name).isEqualTo("Purple Lamborghini")
     }
 }

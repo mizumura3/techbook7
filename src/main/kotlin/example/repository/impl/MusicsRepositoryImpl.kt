@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 
 class MusicsRepositoryImpl : MusicsRepository {
 
@@ -43,6 +44,12 @@ class MusicsRepositoryImpl : MusicsRepository {
             }
     }
 
+    override fun update(id: Int, name: String) {
+        Musics.update({ Musics.id eq id }) {
+            it[Musics.name] = name
+        }
+    }
+
     private fun toArtist(r: ResultRow): Artist =
         Artist(
             id = r[Musics.artistId],
@@ -50,5 +57,4 @@ class MusicsRepositoryImpl : MusicsRepository {
             birth = r[Artists.birth].toLocalDate(),
             website = r[Artists.website]
         )
-
 }
