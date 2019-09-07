@@ -1,9 +1,8 @@
-package com.example
+package example
 
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import example.common.LocalDateSerializer
-import example.sampleModule
 import example.route.root
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -23,15 +22,6 @@ import org.joda.time.LocalDate
 import org.koin.ktor.ext.Koin
 
 fun main(args: Array<String>) {
-
-    // TODO getProperty で外部変数にすること
-    Database.connect(
-        "jdbc:mysql://127.0.0.1:3306/example?useSSL=false&serverTimezone=Asia/Tokyo",
-        driver = "com.mysql.cj.jdbc.Driver",
-        user = "root",
-        password = "password"
-    )
-
     io.ktor.server.netty.EngineMain.main(args)
 }
 
