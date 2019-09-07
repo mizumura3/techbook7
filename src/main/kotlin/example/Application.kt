@@ -14,6 +14,7 @@ import io.ktor.features.DefaultHeaders
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
+import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Locations
 import io.ktor.response.respond
 import io.ktor.routing.routing
@@ -35,6 +36,7 @@ fun main(args: Array<String>) {
 }
 
 @Suppress("unused") // Referenced in application.conf
+@KtorExperimentalLocationsAPI
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
