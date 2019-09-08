@@ -1,6 +1,7 @@
 package example.route
 
 import example.controller.ArtistController
+import example.controller.HelloController
 import example.request.PostRequest
 import example.response.PostResponse
 import io.ktor.application.call
@@ -19,6 +20,7 @@ import org.koin.ktor.ext.inject
 @KtorExperimentalLocationsAPI
 fun Routing.root() {
     val artistController: ArtistController by inject()
+    val helloController: HelloController by inject()
 
     @KtorExperimentalLocationsAPI
     @Location("/{id}")
@@ -33,6 +35,10 @@ fun Routing.root() {
     post("/") {
         val request = call.receive<PostRequest>()
         call.respond(PostResponse("${request.value} posted"))
+    }
+
+    get("/hello") {
+        call.respond(helloController.hello())
     }
 
     get<IdParam> {

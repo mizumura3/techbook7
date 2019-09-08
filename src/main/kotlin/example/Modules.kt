@@ -3,6 +3,7 @@ package example
 import example.repository.ArtistsRepository
 import example.service.ArtistService
 import example.controller.ArtistController
+import example.controller.HelloController
 import example.repository.MusicsRepository
 import example.repository.impl.ArtistsRepositoryImpl
 import example.repository.impl.MusicsRepositoryImpl
@@ -17,4 +18,5 @@ val sampleModule = module {
     single<MusicsRepository> { MusicsRepositoryImpl() }
     single<ArtistService>()
     single<ArtistController>()
+    single<HelloController>()
 }

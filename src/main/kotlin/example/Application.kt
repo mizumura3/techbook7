@@ -20,6 +20,7 @@ import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.Database
 import org.joda.time.LocalDate
 import org.koin.ktor.ext.Koin
+import org.koin.ktor.ext.getProperty
 
 fun main(args: Array<String>) {
 
@@ -57,15 +58,18 @@ fun Application.module() {
     // Koin
     install(Koin) {
         // ktor から設定読み込んで koin の property に設定する方法 今は使わない
-        // koin.setProperty("db.user", environment.config.property("db.user").getString())
+         koin.setProperty("db.user", environment.config.property("db.user").getString())
 
         // こうやって書くと koin.properties を読んでから System.getEnv で環境変数を読んで格納するので
         // 同じキー名の環境変数があった場合は上書きする
         fileProperties()
+        koin.propertyRegistry.loadPropertiesFromFile("koin-prod.properties")
         environmentProperties()
-
         modules(sampleModule)
     }
+
+    // Koin の install が終わった後に Ktor が Koin の getProperty() を使用可能になる
+    println(getProperty("sample", ""))
 
     // StatusPages
     install(StatusPages) {
