@@ -1,6 +1,8 @@
 package example.route
 
 import example.controller.ArtistController
+import example.request.PostRequest
+import example.response.PostResponse
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.locations.KtorExperimentalLocationsAPI
@@ -14,30 +16,46 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import org.koin.ktor.ext.inject
 
-// locations で path を指定する
-@KtorExperimentalLocationsAPI
-@Location("/{artistId}")
-data class ArtistIdParam(
-    val artistId: Int
-)
-
 @KtorExperimentalLocationsAPI
 fun Routing.root() {
     val artistController: ArtistController by inject()
+
+    @KtorExperimentalLocationsAPI
+    @Location("/{id}")
+    data class IdParam(
+        val id: Int
+    )
 
     get("/") {
         call.respond(HttpStatusCode.OK, "Hello World")
     }
 
-    // io.ktor.localtions.get を使用する
-    get<ArtistIdParam> {
-        call.respond(artistController.getArtist(it.artistId))
+    post("/") {
+        val request = call.receive<PostRequest>()
+        call.respond(PostResponse("${request.value} posted"))
     }
 
-    route("/users") {
+    get<IdParam> {
+        val id = it.id
+        call.respond(id)
+    }
+
+    route("/artists") {
+
+        // locations で path を指定する
+        @KtorExperimentalLocationsAPI
+        @Location("/{artistId}")
+        data class ArtistIdParam(
+            val artistId: Int
+        )
 
         get {
             call.respond(artistController.all())
+        }
+
+        // io.ktor.localtions.get を使用する
+        get<ArtistIdParam> {
+            call.respond(artistController.getArtist(it.artistId))
         }
 
         post {
