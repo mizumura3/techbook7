@@ -28,7 +28,7 @@ internal class ArtistsRepositoryImplTest : TestBase() {
      * 全件取得できること
      */
     @Test
-    fun findAll() {
+    fun all() {
         transaction {
             // setup
             repository.create(artist_skrillex())
@@ -39,6 +39,8 @@ internal class ArtistsRepositoryImplTest : TestBase() {
 
             // verify
             assertThat(result).hasSize(2)
+            assertThat(result[0]).isEqualToIgnoringGivenFields(artist_skrillex(), "id")
+            assertThat(result[1]).isEqualToIgnoringGivenFields(artist_zedd(), "id")
         }
     }
 
@@ -54,7 +56,7 @@ internal class ArtistsRepositoryImplTest : TestBase() {
             // exercise
             val result = repository.findById(id)
 
-            // verifyA
+            // verify
             assertThat(result).isEqualToIgnoringGivenFields(artist_skrillex(), "id")
         }
     }
@@ -69,7 +71,9 @@ internal class ArtistsRepositoryImplTest : TestBase() {
             val result = repository.create(artist_skrillex())
 
             // verify
+            val artist = repository.findById(result)
             assertThat(result).isNotNull()
+            assertThat(artist).isEqualToIgnoringGivenFields(artist_skrillex(), "id")
         }
     }
 }

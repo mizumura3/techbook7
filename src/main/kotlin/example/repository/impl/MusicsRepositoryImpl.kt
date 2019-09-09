@@ -29,7 +29,7 @@ class MusicsRepositoryImpl : MusicsRepository {
             }.firstOrNull() ?: throw RecordNotFoundException("Musics record not found. id = $id")
     }
 
-    override fun findAll(): List<Music> {
+    override fun all(): List<Music> {
         return Musics.join(
             Artists,
             JoinType.INNER,

@@ -61,7 +61,7 @@ fun Routing.root() {
 
         // io.ktor.localtions.get を使用する
         get<ArtistIdParam> {
-            call.respond(artistController.getArtist(it.artistId))
+            call.respond(artistController.getArtistById(it.artistId))
         }
 
         post {

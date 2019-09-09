@@ -32,10 +32,10 @@ class ArtistController(private val artistService: ArtistService) {
     }
 
     /**
-     * id で Artists を取得する
+     * id で Artist を取得する
      *
      * @param artistId
-     * @return Artists
+     * @return Artist
      */
-    fun getArtist(artistId: Int): Artist = artistService.get(artistId)
+    fun getArtistById(artistId: Int): Artist = artistService.get(artistId)
 }

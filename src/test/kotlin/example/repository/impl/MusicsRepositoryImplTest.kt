@@ -61,7 +61,7 @@ internal class MusicsRepositoryImplTest : TestBase() {
         }.launch()
 
         // exercise
-        val result = transaction { repository.findAll() }
+        val result = transaction { repository.all() }
 
         // verify
         assertThat(result).hasSize(2)
