@@ -3,7 +3,7 @@ package example.table
 import org.jetbrains.exposed.dao.IntIdTable
 
 /**
- * artists example.table
+ * artists table
  */
 object Artists : IntIdTable(name = "artists") {
     val name = varchar("name", 50)
