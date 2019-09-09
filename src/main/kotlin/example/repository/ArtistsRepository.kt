@@ -10,7 +10,7 @@ interface ArtistsRepository {
     /**
      * 全件取得
      */
-    fun findAll(): List<Artist>
+    fun all(): List<Artist>
 
     /**
      * ID と一致する Artist を返却する

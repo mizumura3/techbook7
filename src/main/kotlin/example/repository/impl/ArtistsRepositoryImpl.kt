@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.selectAll
  */
 class ArtistsRepositoryImpl : ArtistsRepository {
 
-    override fun findAll(): List<Artist> {
+    override fun all(): List<Artist> {
         return Artists.selectAll().map {
             Artist(
                 id = it[Artists.id].value,

@@ -35,7 +35,7 @@ internal class ArtistsRepositoryImplTest : TestBase() {
             repository.create(artist_zedd())
 
             // exercise
-            val result = repository.findAll()
+            val result = repository.all()
 
             // verify
             assertThat(result).hasSize(2)
