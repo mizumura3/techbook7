@@ -63,7 +63,6 @@ fun Application.module() {
         // こうやって書くと koin.properties を読んでから System.getEnv で環境変数を読んで格納するので
         // 同じキー名の環境変数があった場合は上書きする
         fileProperties()
-        koin.propertyRegistry.loadPropertiesFromFile("koin-prod.properties")
         environmentProperties()
         modules(sampleModule)
     }
