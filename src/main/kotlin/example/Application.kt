@@ -3,6 +3,8 @@ package example
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import example.common.LocalDateSerializer
+import example.exception.ExceptionResponse
+import example.exception.RecordNotFoundException
 import example.route.root
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -23,15 +25,6 @@ import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.getProperty
 
 fun main(args: Array<String>) {
-
-    // TODO getProperty で外部変数にすること
-    Database.connect(
-        "jdbc:mysql://127.0.0.1:3306/example?useSSL=false&serverTimezone=Asia/Tokyo",
-        driver = "com.mysql.cj.jdbc.Driver",
-        user = "root",
-        password = "password"
-    )
-
     io.ktor.server.netty.EngineMain.main(args)
 }
 
@@ -58,7 +51,7 @@ fun Application.module() {
     // Koin
     install(Koin) {
         // ktor から設定読み込んで koin の property に設定する方法 今は使わない
-         koin.setProperty("db.user", environment.config.property("db.user").getString())
+//         koin.setProperty("db.user", environment.config.property("db.user").getString())
 
         // こうやって書くと koin.properties を読んでから System.getEnv で環境変数を読んで格納するので
         // 同じキー名の環境変数があった場合は上書きする
@@ -77,7 +70,21 @@ fun Application.module() {
             call.respond(HttpStatusCode.BadRequest, it.message!!)
             throw it // スローすると stacktrace をログに出力する
         }
+
+        // RecordNotFoundException が発生した場合は404とエラーメッセージを返却する
+        exception<RecordNotFoundException> {
+            call.respond(HttpStatusCode.NotFound, ExceptionResponse(it.message!!))
+            throw it // スローすると stacktrace をログに出力する
+        }
     }
+
+    // TODO getProperty で外部変数にすること
+    Database.connect(
+        "jdbc:mysql://127.0.0.1:3306/example?useSSL=false&serverTimezone=Asia/Tokyo",
+        driver = getProperty("db.driver", ""),
+        user = getProperty("db.user", ""),
+        password = getProperty("db.password", "")
+    )
 
     routing {
         root()

@@ -1,5 +1,5 @@
 package example.controller
 
-class HelloController{
+class HelloController {
     fun hello(): String = "hello"
 }

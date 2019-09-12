@@ -2,8 +2,10 @@ package example.route
 
 import example.controller.ArtistController
 import example.controller.HelloController
+import example.logger
 import example.request.PostRequest
 import example.response.PostResponse
+import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.locations.KtorExperimentalLocationsAPI
@@ -30,6 +32,7 @@ fun Routing.root() {
 
     get("/") {
         call.respond(HttpStatusCode.OK, "Hello World")
+        logger().info("info log")
     }
 
     post("/") {
@@ -47,6 +50,9 @@ fun Routing.root() {
     }
 
     route("/artists") {
+        intercept(ApplicationCallPipeline.Features) {
+            println("this is artists api call.")
+        }
 
         // locations で path を指定する
         @KtorExperimentalLocationsAPI
@@ -66,7 +72,7 @@ fun Routing.root() {
 
         post {
             artistController.create(call.receive())
-            call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.Created)
         }
     }
 }
