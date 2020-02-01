@@ -1,8 +1,11 @@
 package example
 
+import example.auth0.Auth0Client
+import example.auth0.Auth0ClientSecretConfig
 import example.repository.ArtistsRepository
 import example.service.ArtistService
 import example.controller.ArtistController
+import example.controller.Auth0Controller
 import example.controller.HelloController
 import example.repository.MusicsRepository
 import example.repository.impl.ArtistsRepositoryImpl
@@ -19,4 +22,15 @@ val sampleModule = module {
     single<ArtistService>()
     single<ArtistController>()
     single<HelloController>()
+    single<Auth0Controller>()
+
+    single {
+        Auth0ClientSecretConfig(
+            clientId = getProperty("auth0.client_id"),
+            clientSecret = getProperty("auth0.client_secret"),
+            audience = getProperty("auth0.audience")
+        )
+    }
+
+    single<Auth0Client>()
 }

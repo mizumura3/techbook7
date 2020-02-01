@@ -1,12 +1,14 @@
 package example.route
 
 import example.controller.ArtistController
+import example.controller.Auth0Controller
 import example.controller.HelloController
 import example.logger
 import example.request.PostRequest
 import example.response.PostResponse
 import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
+import io.ktor.auth.authenticate
 import io.ktor.http.HttpStatusCode
 import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Location
@@ -23,12 +25,27 @@ import org.koin.ktor.ext.inject
 fun Routing.root() {
     val artistController: ArtistController by inject()
     val helloController: HelloController by inject()
+    val auth0Controller: Auth0Controller by inject()
 
     @KtorExperimentalLocationsAPI
     @Location("/{id}")
     data class IdParam(
         val id: Int
     )
+
+    get<IdParam> {
+        val id = it.id
+        call.respond(id)
+    }
+
+    @KtorExperimentalLocationsAPI
+    @Location("/{value}")
+    data class StringParam(
+        val value: String
+    )
+
+    // favicon のエラーログが出るので追記
+    get<StringParam> {}
 
     get("/") {
         call.respond(HttpStatusCode.OK, "Hello World")
@@ -40,13 +57,20 @@ fun Routing.root() {
         call.respond(PostResponse("${request.value} posted"))
     }
 
-    get("/hello") {
-        call.respond(helloController.hello())
+    authenticate {
+        get("/hello") {
+            call.respond(helloController.hello())
+        }
     }
 
-    get<IdParam> {
-        val id = it.id
-        call.respond(id)
+//    authenticate("token") {
+//        get("/auth0/token") {
+//            call.respond(auth0Controller.getAccessToken())
+//        }
+//    }
+
+    get("/auth0/token") {
+        call.respond(auth0Controller.getAccessToken())
     }
 
     route("/artists") {
