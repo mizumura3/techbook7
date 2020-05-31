@@ -12,6 +12,10 @@ class Auth0Client(
     private val auth0ClientSecretConfig: Auth0ClientSecretConfig
 )
 {
+
+    /**
+     * auth0 のトークンを取得する
+     */
     fun oauthToken(): Auth0OAuthTokenResponse {
         val request = Auth0OAuthTokenRequest(
             client_id = auth0ClientSecretConfig.clientId,
@@ -26,9 +30,9 @@ class Auth0Client(
             .body(jacksonObjectMapper().writeValueAsString(request))
             .response()
 
-        when (triple.third) {
+        return when (triple.third) {
             is Result.Success -> {
-                return jacksonObjectMapper().readValue(triple.second.data, Auth0OAuthTokenResponse::class.java)
+                jacksonObjectMapper().readValue(triple.second.data, Auth0OAuthTokenResponse::class.java)
             }
 
             is Result.Failure -> {

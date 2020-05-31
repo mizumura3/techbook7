@@ -19,10 +19,10 @@ import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
 import org.eclipse.jetty.http.HttpHeader
-import org.joda.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.koin.test.inject
+import java.time.LocalDate
 import javax.sql.DataSource
 import kotlin.test.assertEquals
 
@@ -64,7 +64,7 @@ internal class ApplicationKtTest : TestBase() {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(ArtistRequest(
                 name = "Skrillex",
-                birth = LocalDate.parse("1988-01-15"),
+                birth = LocalDate.of(1988, 1, 15),
                 website = "https://skrillex.com/").toJson()
             )
         }.run {

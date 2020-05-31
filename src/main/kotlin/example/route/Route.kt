@@ -2,6 +2,7 @@ package example.route
 
 import example.controller.ArtistController
 import example.controller.Auth0Controller
+import example.controller.FirebaseController
 import example.controller.HelloController
 import example.logger
 import example.request.PostRequest
@@ -26,6 +27,7 @@ fun Routing.root() {
     val artistController: ArtistController by inject()
     val helloController: HelloController by inject()
     val auth0Controller: Auth0Controller by inject()
+    val firebaseController: FirebaseController by inject()
 
     @KtorExperimentalLocationsAPI
     @Location("/{id}")
@@ -57,20 +59,42 @@ fun Routing.root() {
         call.respond(PostResponse("${request.value} posted"))
     }
 
-    authenticate {
+    authenticate("jwt") {
         get("/hello") {
             call.respond(helloController.hello())
         }
     }
 
-//    authenticate("token") {
-//        get("/auth0/token") {
-//            call.respond(auth0Controller.getAccessToken())
-//        }
-//    }
+    authenticate("token") {
+        get("/auth0/token") {
+            call.respond(auth0Controller.getAccessToken())
+        }
+    }
 
     get("/auth0/token") {
         call.respond(auth0Controller.getAccessToken())
+    }
+
+    @Location("/firebase/token/{uid}")
+    data class FirebaseUidParam(
+        val uid: String
+    )
+
+    /**
+     * firebase のトークンを取得する
+     */
+    get<FirebaseUidParam> {
+        val result = firebaseController.getToken(it.uid)
+        call.respond(HttpStatusCode.OK, result)
+    }
+
+    /**
+     * firebase の認証が必要なエンドポイント
+     */
+    authenticate("firebase") {
+        get("/firebase/auth") {
+            call.respond(HttpStatusCode.OK, "firebase auth")
+        }
     }
 
     route("/artists") {

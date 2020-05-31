@@ -1,6 +1,7 @@
 package example.request
 
-import org.joda.time.LocalDate
+import java.time.LocalDate
+
 
 data class ArtistRequest(
     val name: String,

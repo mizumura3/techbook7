@@ -84,4 +84,87 @@ internal class MusicsRepositoryImplTest : TestBase() {
         val result = transaction { repository.findById(1) }
         assertThat(result.name).isEqualTo("Purple Lamborghini")
     }
+
+    @DisplayName("artist_id と一致する musics の件数を返却すること")
+    @Test
+    fun countByArtistId() {
+        // setup
+        dbSetup(to = datasource) {
+            insertArtistsFixture(ArtistsFixture().skrillex())
+            insertMusicsFixture(MusicsFixture().skrillex())
+            insertMusicsFixture(MusicsFixture().skrillex().copy(id = 2, name = "Bangarang"))
+        }.launch()
+
+        // exercise
+        val result = transaction { repository.countByArtistId(1) }
+
+        // verify
+        assertThat(result).isEqualTo(2)
+    }
+
+    @DisplayName(" music の id 最大値を取得すること")
+    @Test
+    fun maxId() {
+        // setup
+        insertTestData()
+
+        // verify
+        val result = transaction { repository.maxId() }
+
+        // exercise
+        assertThat(result).isEqualTo(2)
+    }
+
+    @DisplayName("music の id 最小値を取得すること")
+    @Test
+    fun minId() {
+        // setup
+        insertTestData()
+
+        // verify
+        val result = transaction { repository.minId() }
+
+        // exercise
+        assertThat(result).isEqualTo(1)
+    }
+
+    @DisplayName("limit で指定した件数取得できること")
+    @Test
+    fun limit() {
+
+        // setup
+        insertTestData()
+
+        // verify
+        val result = transaction { repository.limit(2) }
+
+        // exercise
+        assertThat(result.size).isEqualTo(2)
+    }
+
+    @DisplayName("alias でサブクエリが実行できること")
+    @Test
+    fun alias() {
+
+        // setup
+        insertTestData()
+
+        // verify
+        val result = transaction {
+            repository.alias()
+        }
+
+        // exercise
+        assertThat(result.name).isEqualTo("Stay The Night")
+
+    }
+
+    private fun insertTestData() {
+        dbSetup(to = datasource) {
+            insertMusicsFixture(MusicsFixture().skrillex())
+            insertMusicsFixture(MusicsFixture().zedd())
+            insertArtistsFixture(ArtistsFixture().skrillex())
+            insertArtistsFixture(ArtistsFixture().zedd())
+        }.launch()
+    }
 }

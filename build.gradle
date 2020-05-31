@@ -59,7 +59,9 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5"
 
     // exposed
-    implementation "org.jetbrains.exposed:exposed:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-core:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-jdbc:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-java-time:$exposed_version"
 
     // mysql
     implementation "mysql:mysql-connector-java:8.0.11"
@@ -69,6 +71,9 @@ dependencies {
 
     // fuel
     implementation "com.github.kittinunf.fuel:fuel:$fuel_version"
+
+    // firebase
+    implementation "com.google.firebase:firebase-admin:$firebase_admin_version"
 
     // test
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"

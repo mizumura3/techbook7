@@ -76,4 +76,18 @@ internal class ArtistsRepositoryImplTest : TestBase() {
             assertThat(artist).isEqualToIgnoringGivenFields(artist_skrillex(), "id")
         }
     }
+
+    @Test
+    fun count() {
+        transaction {
+
+            // exercise
+            repository.create(artist_skrillex())
+            repository.create(artist_zedd())
+
+            // verify
+            val count = repository.count()
+            assertThat(count).isEqualTo(2)
+        }
+    }
 }

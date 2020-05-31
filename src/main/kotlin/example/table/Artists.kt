@@ -1,6 +1,8 @@
 package example.table
 
-import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.`java-time`.date
+
 
 /**
  * artists table

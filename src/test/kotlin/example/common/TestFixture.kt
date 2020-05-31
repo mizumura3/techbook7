@@ -1,12 +1,12 @@
 package example.common
 
 import example.domain.Artist
-import org.joda.time.LocalDate
+import java.time.LocalDate
 
 fun artist_skrillex(): Artist {
     return Artist(
         name = "Skrillex",
-        birth = LocalDate.parse("1988-01-15"),
+        birth = LocalDate.of(1988, 1, 15),
         website = "https://skrillex.com/"
     )
 }
@@ -14,7 +14,7 @@ fun artist_skrillex(): Artist {
 fun artist_zedd(): Artist {
     return Artist(
         name = "ZEDD",
-        birth = LocalDate.parse("1989-09-02"),
+        birth = LocalDate.of(1989, 9, 2),
         website = "https://www.zedd.net/"
     )
 }

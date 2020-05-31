@@ -6,7 +6,10 @@ import example.repository.ArtistsRepository
 import example.service.ArtistService
 import example.controller.ArtistController
 import example.controller.Auth0Controller
+import example.controller.FirebaseController
 import example.controller.HelloController
+import example.firebase.FirebaseClient
+import example.firebase.FirebaseClientSecretConfig
 import example.repository.MusicsRepository
 import example.repository.impl.ArtistsRepositoryImpl
 import example.repository.impl.MusicsRepositoryImpl
@@ -32,5 +35,13 @@ val sampleModule = module {
         )
     }
 
+    single {
+        FirebaseClientSecretConfig(
+            apiKey = getProperty("firebase.apiKey")
+        )
+    }
+
     single<Auth0Client>()
+    single<FirebaseClient>()
+    single<FirebaseController>()
 }

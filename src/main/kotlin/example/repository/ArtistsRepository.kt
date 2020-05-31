@@ -21,4 +21,9 @@ interface ArtistsRepository {
      * Artist を insert する
      */
     fun create(artist: Artist): Int
+
+    /**
+     * Artists の件数を返却する
+     */
+    fun count(): Int
 }

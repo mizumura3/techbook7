@@ -1,6 +1,5 @@
 package example.token
 
-import example.exception.ExceptionResponse
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.auth.Authentication
