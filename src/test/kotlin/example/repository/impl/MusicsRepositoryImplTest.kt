@@ -156,7 +156,24 @@ internal class MusicsRepositoryImplTest : TestBase() {
 
         // exercise
         assertThat(result.name).isEqualTo("Stay The Night")
+    }
 
+    @DisplayName("batch insert が実行できること")
+    @Test
+    fun batchInsert() {
+
+        dbSetup(to = datasource) {
+            insertArtistsFixture(ArtistsFixture().skrillex())
+        }.launch()
+
+        // verify
+        val result = transaction {
+            repository.batchInsert(1, listOf("a", "b", "c"))
+            repository.all()
+        }
+
+        // exercise
+        assertThat(result.size).isEqualTo(3)
     }
 
     private fun insertTestData() {

@@ -9,12 +9,14 @@ import example.table.Musics
 import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.alias
+import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.max
 import org.jetbrains.exposed.sql.min
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
+import org.koin.core.qualifier.named
 
 class MusicsRepositoryImpl : MusicsRepository {
 
@@ -110,6 +112,13 @@ class MusicsRepositoryImpl : MusicsRepository {
                 artist = null,
                 name = it[Musics.name]
             )
+        }
+    }
+
+    override fun batchInsert(artistId: Int, musicNames: List<String>) {
+        Musics.batchInsert(musicNames) { name ->
+            this[Musics.name] = name
+            this[Musics.artistId] = artistId
         }
     }
 

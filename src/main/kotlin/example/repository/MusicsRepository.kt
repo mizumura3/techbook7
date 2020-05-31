@@ -11,4 +11,5 @@ interface MusicsRepository {
     fun minId(): Int
     fun limit(limit: Int): List<Music>
     fun alias(): Music
+    fun batchInsert(artistId: Int, musicNames: List<String>)
 }
