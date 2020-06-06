@@ -16,7 +16,6 @@ import org.jetbrains.exposed.sql.min
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
-import org.koin.core.qualifier.named
 
 class MusicsRepositoryImpl : MusicsRepository {
 
